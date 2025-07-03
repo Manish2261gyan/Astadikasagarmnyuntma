@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Route Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">🚢 Optimal Ship Route</h1>
+
+    <div th:if="${path}">
+        <div class="alert alert-success">
+            <strong>Path Found!</strong>
+        </div>
+
+        <ol class="list-group list-group-numbered mb-4">
+            <li class="list-group-item" th:each="node : ${path}" th:text="${node.name}"></li>
+        </ol>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white">🌤️ Weather at <span th:text="${source.name}"></span></div>
+                    <div class="card-body">
+                        <p th:text="${sourceWeather}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white">🌦️ Weather at <span th:text="${destination.name}"></span></div>
+                    <div class="card-body">
+                        <p th:text="${destinationWeather}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-4">
+            <h3 class="text-center">🗺️ Visual Route Map</h3>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-outline-primary" th:href="@{/path/find}">🔄 Try Another Route</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Route Drawing Script -->
+<script th:inline="javascript">
+    let path = /*[[${path}]]*/ [];
+    let latlngs = [];
+
+    for (let i = 0; i < path.length; i++) {
+        latlngs.push([path[i].latitude, path[i].longitude]);
+    }
+
+    if (latlngs.length > 0) {
+        let map = L.map('map').setView(latlngs[0], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        for (let i = 0; i < latlngs.length; i++) {
+            L.marker(latlngs[i]).addTo(map).bindPopup(path[i].name);
+        }
+
+        L.polyline(latlngs, { color: 'blue', weight: 4 }).addTo(map);
+        map.fitBounds(latlngs);
+    }
+</script>
+</body>
+</html>

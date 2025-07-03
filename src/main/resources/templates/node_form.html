@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Node</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Add New Port</h2>
+
+    <form th:action="@{/nodes/save}" th:object="${node}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" th:field="*{name}" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Latitude</label>
+            <input type="number" step="any" th:field="*{latitude}" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Longitude</label>
+            <input type="number" step="any" th:field="*{longitude}" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">Add Port</button>
+    </form>
+
+    <hr>
+    <h4>Existing Ports</h4>
+    <ul class="list-group mt-3">
+        <li class="list-group-item" th:each="n : ${nodes}" th:text="${n.name + ' (' + n.latitude + ', ' + n.longitude + ')'}"></li>
+    </ul>
+</div>
+</body>
+</html>

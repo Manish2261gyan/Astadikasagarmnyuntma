@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Route</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Add New Ship Route</h2>
+
+    <form method="POST" action="/routes/save">
+        <div class="mb-3">
+            <label class="form-label">Source Port</label>
+            <select name="sourceId" class="form-select" required>
+                <option value="" disabled selected>Select Source</option>
+                <option th:each="node : ${nodes}" th:value="${node.id}" th:text="${node.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Destination Port</label>
+            <select name="destinationId" class="form-select" required>
+                <option value="" disabled selected>Select Destination</option>
+                <option th:each="node : ${nodes}" th:value="${node.id}" th:text="${node.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Distance (km)</label>
+            <input type="number" step="any" name="distance" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Route</button>
+    </form>
+
+    <hr>
+    <h4>All Routes</h4>
+    <ul class="list-group">
+        <li class="list-group-item"
+            th:each="r : ${routes}"
+            th:text="${r.source != null && r.destination != null
+                        ? r.source.name + ' ➝ ' + r.destination.name + ' (' + r.distance + ' km)'
+                        : 'Invalid route'}">
+        </li>
+    </ul>
+</div>
+</body>
+</html>
