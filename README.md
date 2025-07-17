@@ -34,9 +34,4 @@ Astadikasagaranyunatama is a smart ship routing system developed using Java Spri
 ## ✅ Purpose:
 This project is aimed at helping optimize maritime travel, reduce fuel costs, and minimize travel time by intelligently suggesting best route paths between multiple ports.
 
----
-
-✅ **Feel free to modify or shorten as per your project setup.**
-✅ This version looks professional on both **LinkedIn** and **GitHub**.
-
-If you want, I can create a **final ready-to-paste README file** for you!
+ 
